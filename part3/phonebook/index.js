@@ -74,12 +74,10 @@ app.post(
     );
 
     if (!newPerson.name || !newPerson.number) {
-      return response
-        .status(404)
-        .json({
-          error:
-            'name and number must bu fullfiled',
-        });
+      return response.status(404).json({
+        error:
+          'name and number must bu fullfiled',
+      });
     }
 
     if (existPerson) {
@@ -145,7 +143,7 @@ app.delete('/api/persons/:id', (req, res) => {
   }
 });
 
-const PORT = 3002;
+const PORT = process.env.PORT || 3002;
 app.listen(PORT, () => {
   console.log(`Sever running on port ${PORT}`);
 });

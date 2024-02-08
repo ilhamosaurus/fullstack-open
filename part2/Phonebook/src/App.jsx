@@ -134,7 +134,7 @@ const App = () => {
 
   const People = ({name, number, id}) => {
     return (
-      <li>{name} {number} <Button text='delete' type='submit' handleNewChange={() => deletePerson(id)} /></li>
+      <li>{name} {number} {id} <Button text='delete' type='submit' handleNewChange={() => deletePerson(id)} /></li>
     )
   }
 

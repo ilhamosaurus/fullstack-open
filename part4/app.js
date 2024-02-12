@@ -11,6 +11,7 @@ const {
   unknownEndpoint,
   errorHandler,
 } = require('./utils/middleware');
+const userRouter = require('./controllers/userRoute');
 
 mongoose.set('strictQuery', false);
 
@@ -31,6 +32,7 @@ app.use(express.static('build'));
 app.use(express.json());
 app.use(requestLogger);
 app.use('/api/blogs', blogRouter);
+app.use('/api/users', userRouter);
 app.use(unknownEndpoint);
 app.use(errorHandler);
 

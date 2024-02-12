@@ -4,14 +4,20 @@ const mongoose = require('mongoose');
 mongoose.set('strictQuery', false);
 const url = process.env.MONGO_URI;
 
-mongoose
-  .connect(url)
-  .then(() => {
-    console.log('connected to mongodb');
-  })
-  .catch((err) => {
-    console.error('The error was: ', err);
-  });
+const connectToMongo = async () => {
+  try {
+    await mongoose.connect(url);
+
+    console.log('Connected to MongoDB');
+  } catch (e) {
+    console.error(
+      'Error connecting to MongoDB: ',
+      e
+    );
+  }
+};
+
+connectToMongo();
 
 const personSchema = new mongoose.Schema({
   name: {

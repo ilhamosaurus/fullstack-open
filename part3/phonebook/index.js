@@ -58,12 +58,13 @@ app.post(
         number: body.number,
       });
 
-      await person
-        .save()
-        .then((person) => {
-          res.json(person);
-        })
-        .catch((error) => next(error));
+      try {
+        const newPerson = await person.save();
+
+        res.json(newPerson);
+      } catch (e) {
+        next(e);
+      }
     }
   }
 );
@@ -71,11 +72,13 @@ app.post(
 app.get(
   '/api/persons',
   async (req, res, next) => {
-    await Person.find({})
-      .then((result) => {
-        res.json(result);
-      })
-      .catch((error) => next(error));
+    try {
+      const result = await Person.find();
+
+      res.json(result);
+    } catch (e) {
+      next(e);
+    }
   }
 );
 
@@ -109,15 +112,15 @@ app.get('/info', async (req, res, next) => {
 app.get(
   '/api/persons/:id',
   async (req, res, next) => {
-    await Person.findById(req.params.id)
-      .then((person) => {
-        if (person) {
-          res.json(person);
-        } else {
-          res.status(404).end();
-        }
-      })
-      .catch((error) => next(error));
+    try {
+      const foundPerson = await Person.findById(
+        req.params.id
+      );
+
+      res.json(foundPerson);
+    } catch (e) {
+      next(e);
+    }
   }
 );
 
@@ -137,19 +140,22 @@ app.put(
   async (req, res, next) => {
     const { name, number } = req.body;
 
-    await Person.findByIdAndUpdate(
-      req.params.id,
-      { name, number },
-      {
-        new: true,
-        runValidators: true,
-        context: 'query',
-      }
-    )
-      .then((updatedPerson) => {
-        res.json(updatedPerson);
-      })
-      .catch((error) => next(error));
+    try {
+      const updatedPerson =
+        Person.findByIdAndUpdate(
+          req.params.id,
+          { name, number },
+          {
+            new: true,
+            runValidators: true,
+            context: 'query',
+          }
+        );
+
+      res.json(updatedPerson);
+    } catch (e) {
+      next(e);
+    }
   }
 );
 

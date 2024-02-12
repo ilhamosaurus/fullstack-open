@@ -1,9 +1,9 @@
-require('dotenv').config();
-const mongoose = require('mongoose');
+require("dotenv").config();
+const mongoose = require("mongoose");
 
 const url = process.env.MONGO_URI;
 
-mongoose.set('strictQuery', false);
+mongoose.set("strictQuery", false);
 mongoose.connect(url);
 
 const personSchema = new mongoose.Schema({
@@ -11,18 +11,13 @@ const personSchema = new mongoose.Schema({
   number: Number,
 });
 
-const Person = mongoose.model(
-  'Person',
-  personSchema
-);
+const Person = mongoose.model("Person", personSchema);
 
 if (process.argv.length === 2) {
   Person.find({}).then((result) => {
-    console.log('phonebook: ');
+    console.log("phonebook: ");
     result.forEach((person) => {
-      console.log(
-        `${person.name} ${person.number}`
-      );
+      console.log(`${person.name} ${person.number}`);
     });
     mongoose.connection.close();
   });
@@ -33,9 +28,7 @@ if (process.argv.length === 2) {
   });
 
   person.save().then((result) => {
-    console.log(
-      `added ${result.name} number ${result.number} to phonebook`
-    );
+    console.log(`added ${result.name} number ${result.number} to phonebook`);
     mongoose.connection.close();
   });
 }

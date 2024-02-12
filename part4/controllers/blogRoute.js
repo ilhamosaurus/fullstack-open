@@ -4,7 +4,10 @@ const { error } = require('../utils/logger');
 
 blogRouter.get('/', async (req, res) => {
   try {
-    const blogs = await Blog.find({});
+    const blogs = await Blog.find({}).populate('user', {
+      username: 1,
+      name: 1,
+    });
 
     res.json(blogs);
   } catch (e) {
@@ -14,11 +17,20 @@ blogRouter.get('/', async (req, res) => {
 
 blogRouter.post('/', async (req, res) => {
   const { title, author, url, likes } = req.body;
+
+  const user = req.user;
+
+  if (!user) {
+    return res
+      .status(401)
+      .json({ error: 'token missing or invalid' });
+  }
   const blog = new Blog({
     title,
     author,
     url,
     likes: likes ? likes : 0,
+    user: user.id,
   });
 
   if (!title || !url) {
@@ -27,6 +39,9 @@ blogRouter.post('/', async (req, res) => {
 
   try {
     const result = await blog.save();
+
+    user.blogs = user.blogs.concat(result._id);
+    await user.save();
 
     return res.status(201).json(result);
   } catch (e) {
@@ -54,11 +69,9 @@ blogRouter.put('/:id', async (req, res) => {
 
     const updatedBlog = await Blog.findByIdAndUpdate(
       req.params.id,
-      { title, author, url, likes },
+      { title, author, url, likes: likes ? likes : 0 },
       {
         new: true,
-        runValidators: true,
-        context: 'query',
       }
     );
 
@@ -69,10 +82,26 @@ blogRouter.put('/:id', async (req, res) => {
 });
 
 blogRouter.delete('/:id', async (req, res) => {
-  try {
-    await Blog.findByIdAndDelete(req.params.id);
+  const user = req.user;
 
-    res.status(204).end();
+  if (!user) {
+    return res
+      .status(401)
+      .json({ error: 'token missing or invalid' });
+  }
+
+  try {
+    const blog = await Blog.findById(req.params.id);
+
+    if (blog.user.toString() === user.id) {
+      await Blog.findByIdAndDelete(req.params.id);
+
+      return res.status(204).end();
+    } else {
+      return res
+        .status(401)
+        .json({ error: 'Unauthorized to delete the blog' });
+    }
   } catch (e) {
     error('Error deleting a blog: ', e);
   }

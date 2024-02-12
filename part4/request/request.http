@@ -5,10 +5,11 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-  "title": "ayo coba2",
+  "title": "ayo coba terus gan",
   "author": "ilhamosaurus",
   "url": "instagram.com/ilhamosaurus",
-  "likes": 302
+  "likes": 306,
+  "userId": "65c9d00ecc51dedd2bd2d126"
 }
 
 ###
@@ -22,7 +23,29 @@ Content-Type: application/json
   "title": "ayo coba lagi",
   "author": "ilhamosaurus",
   "url": "github.com/ilhamosaurus",
-  "likes": 400
+  "likes": 400,
 }
 ###
 DELETE http://localhost:3003/api/blogs/65c9964c3b448a3c9ec793f6
+
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+  "username": "ilhamosaurus",
+  "name": "ilham aja",
+  "password": "supersecret"
+}
+
+###
+GET http://localhost:3003/api/users
+
+###
+POST http://localhost:3003/api/login
+Content-Type: application/json
+
+{
+  "username": "ilhamosaurus",
+  "password": "supersecret"
+}

@@ -10,8 +10,11 @@ const {
   requestLogger,
   unknownEndpoint,
   errorHandler,
+  tokenExtractor,
+  userExtractor,
 } = require('./utils/middleware');
 const userRouter = require('./controllers/userRoute');
+const loginRouter = require('./controllers/login');
 
 mongoose.set('strictQuery', false);
 
@@ -31,8 +34,10 @@ app.use(cors());
 app.use(express.static('build'));
 app.use(express.json());
 app.use(requestLogger);
-app.use('/api/blogs', blogRouter);
+app.use(tokenExtractor);
+app.use('/api/blogs', userExtractor, blogRouter);
 app.use('/api/users', userRouter);
+app.use('/api/login', loginRouter);
 app.use(unknownEndpoint);
 app.use(errorHandler);
 

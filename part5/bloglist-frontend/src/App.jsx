@@ -4,6 +4,8 @@ import blogService from './services/blogs';
 import loginService from './services/login';
 import Notification from './components/Notification';
 import Input from './components/Input';
+import BlogForm from './components/BlogForm';
+import Toggelable from './components/Toggelable';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -16,14 +18,7 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [changeMessage, setChangeMessage] = useState(null);
-  const alias = [
-    'Username',
-    'Password',
-    'Title',
-    'Author',
-    'Url',
-    'Likes',
-  ];
+  const alias = ['Username', 'Password'];
 
   useEffect(() => {
     async function getBlogs() {
@@ -58,8 +53,11 @@ const App = () => {
         username,
         password,
       });
-      window.localStorage.setItem('loggedBloglistUser', JSON.stringify(user))
-      blogService.setToken(user.token)
+      window.localStorage.setItem(
+        'loggedBloglistUser',
+        JSON.stringify(user)
+      );
+      blogService.setToken(user.token);
       setUser(user);
       setUsername('');
       setPassword('');
@@ -139,38 +137,27 @@ const App = () => {
       <button type='submit' onClick={handleLogout}>
         logout
       </button>
-      <div>
-        <h2>Create a New Blog</h2>
-        <form onSubmit={addBlog}>
-          <Input
-            value={title}
-            name={alias[2]}
-            setChange={({ target }) =>
-              setTitle(target.value)
-            }
-          />
-          <Input
-            value={author}
-            name={alias[3]}
-            setChange={({ target }) =>
-              setAuthor(target.value)
-            }
-          />
-          <Input
-            value={url}
-            name={alias[4]}
-            setChange={({ target }) => setUrl(target.value)}
-          />
-          <Input
-            value={likes}
-            name={alias[5]}
-            setChange={({ target }) =>
-              setLikes(target.value)
-            }
-          />
-          <button type='submit'>Create</button>
-        </form>
-      </div>
+      <Toggelable buttonLabel='New Blog'>
+      <BlogForm
+        title={title}
+        author={author}
+        url={url}
+        likes={likes}
+        handleSubmit={addBlog}
+        handleTitleChange={({ target }) =>
+          setTitle(target.value)
+        }
+        handleAuthorChange={({ target }) =>
+          setAuthor(target.value)
+        }
+        handleUrlChange={({ target }) =>
+          setUrl(target.value)
+        }
+        handleLikesChange={({ target }) =>
+          setLikes(target.value)
+        }
+      />
+      </Toggelable>
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
       ))}

@@ -1,7 +1,25 @@
-const Blog = ({ blog }) => (
-  <div>
-    {blog.title} {blog.author}
-  </div>  
-)
+import BlogDetail from "./BlogDetail";
+import Toggelable from "./Toggelable";
 
-export default Blog
+const Blog = ({ blog }) => {
+  const blogStyle = {
+    paddingTop: 10,
+    paddingLeft: 2,
+    border: 'solid',
+    borderWitdth: 1,
+    marginBottom: 5,
+  };
+
+  return (
+    <div style={blogStyle}>
+      <div>
+        {blog.title} {blog.author}
+      </div>
+      <Toggelable buttonLabel='View' buttonLabel2='Hide'>
+        <BlogDetail blog={blog} />
+      </Toggelable>
+    </div>
+  );
+};
+
+export default Blog;

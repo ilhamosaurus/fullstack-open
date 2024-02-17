@@ -137,7 +137,7 @@ const App = () => {
       <button type='submit' onClick={handleLogout}>
         logout
       </button>
-      <Toggelable buttonLabel='New Blog'>
+      <Toggelable buttonLabel='New Blog' buttonLabel2='Cancel'>
       <BlogForm
         title={title}
         author={author}

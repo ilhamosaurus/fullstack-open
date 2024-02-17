@@ -1,4 +1,5 @@
-import Input from './Input';
+import Input from './Input'
+import PropTypes from 'prop-types'
 
 const BlogForm = ({
   handleSubmit,
@@ -11,36 +12,32 @@ const BlogForm = ({
   url,
   likes,
 }) => {
-  const alias = ['Title', 'Author', 'Url', 'Likes'];
+  const alias = ['Title', 'Author', 'Url', 'Likes']
 
   return (
     <div>
       <h2>Create a New Blog</h2>
       <form onSubmit={handleSubmit}>
-        <Input
-          value={title}
-          name={alias[0]}
-          setChange={handleTitleChange}
-        />
-        <Input
-          value={author}
-          name={alias[1]}
-          setChange={handleAuthorChange}
-        />
-        <Input
-          value={url}
-          name={alias[2]}
-          setChange={handleUrlChange}
-        />
-        <Input
-          value={likes}
-          name={alias[3]}
-          setChange={handleLikesChange}
-        />
-        <button type='submit'>Create</button>
+        <Input value={title} name={alias[0]} setChange={handleTitleChange} />
+        <Input value={author} name={alias[1]} setChange={handleAuthorChange} />
+        <Input value={url} name={alias[2]} setChange={handleUrlChange} />
+        <Input value={likes} name={alias[3]} setChange={handleLikesChange} />
+        <button type="submit">Create</button>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default BlogForm;
+BlogForm.propTypes = {
+  handleSubmit: PropTypes.func.isRequired,
+  handleTitleChange: PropTypes.func.isRequired,
+  handleAuthorChange: PropTypes.func.isRequired,
+  handleUrlChange: PropTypes.func.isRequired,
+  handleLikesChange: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
+  author: PropTypes.string.isRequired,
+  url: PropTypes.string.isRequired,
+  likes: PropTypes.number.isRequired,
+}
+
+export default BlogForm

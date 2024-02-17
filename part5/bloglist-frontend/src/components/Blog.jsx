@@ -1,5 +1,6 @@
-import BlogDetail from './BlogDetail';
-import Toggelable from './Toggelable';
+import BlogDetail from './BlogDetail'
+import Toggelable from './Toggelable'
+import PropTypes from 'prop-types'
 
 const Blog = ({ blog, addLikes, deleteBlogs }) => {
   const blogStyle = {
@@ -8,22 +9,24 @@ const Blog = ({ blog, addLikes, deleteBlogs }) => {
     border: 'solid',
     borderWitdth: 1,
     marginBottom: 5,
-  };
+  }
 
   return (
     <div style={blogStyle}>
       <div>
         {blog.title} {blog.author}
       </div>
-      <Toggelable buttonLabel='View' buttonLabel2='Hide'>
-        <BlogDetail
-          blog={blog}
-          addLikes={addLikes}
-          deleteBlog={deleteBlogs}
-        />
+      <Toggelable buttonLabel="View" buttonLabel2="Hide">
+        <BlogDetail blog={blog} addLikes={addLikes} deleteBlog={deleteBlogs} />
       </Toggelable>
     </div>
-  );
-};
+  )
+}
 
-export default Blog;
+Blog.propTypes = {
+  blog: PropTypes.object.isRequired,
+  addLikes: PropTypes.func.isRequired,
+  deleteBlogs: PropTypes.func.isRequired,
+}
+
+export default Blog

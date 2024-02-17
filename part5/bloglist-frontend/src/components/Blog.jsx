@@ -1,7 +1,7 @@
-import BlogDetail from "./BlogDetail";
-import Toggelable from "./Toggelable";
+import BlogDetail from './BlogDetail';
+import Toggelable from './Toggelable';
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, addLikes, deleteBlogs }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -16,7 +16,11 @@ const Blog = ({ blog }) => {
         {blog.title} {blog.author}
       </div>
       <Toggelable buttonLabel='View' buttonLabel2='Hide'>
-        <BlogDetail blog={blog} />
+        <BlogDetail
+          blog={blog}
+          addLikes={addLikes}
+          deleteBlog={deleteBlogs}
+        />
       </Toggelable>
     </div>
   );

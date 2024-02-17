@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Blog from './components/Blog';
 import blogService from './services/blogs';
 import loginService from './services/login';
@@ -18,20 +18,23 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [changeMessage, setChangeMessage] = useState(null);
+  const [refreshBlogs, setRefreshBlogs] = useState(false);
   const alias = ['Username', 'Password'];
+  const blogFormRef = useRef();
 
   useEffect(() => {
     async function getBlogs() {
       try {
         const blogs = await blogService.getAll();
 
+        blogs.sort((a, b) => b.likes - a.likes);
         setBlogs(blogs);
       } catch (e) {
         setErrorMessage('Error at rendering blogs: ', e);
       }
     }
     getBlogs();
-  }, []);
+  }, [refreshBlogs]);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem(
@@ -85,17 +88,37 @@ const App = () => {
     };
 
     try {
+      blogFormRef.current.toggleVisibility()
       const result = await blogService.create(newBlog);
 
       setBlogs(blogs.concat(result));
       setChangeMessage(
         `a new blog ${newBlog.title} by ${newBlog.user} added`
       );
+      setRefreshBlogs(!refreshBlogs);
       setTimeout(() => {
         setChangeMessage(null);
       }, 5000);
     } catch (e) {
       throw new Error(e.message);
+    }
+  };
+
+  const addLikes = async (id, updatedBlog) => {
+    try {
+      await blogService.update(id, updatedBlog);
+      setRefreshBlogs(!refreshBlogs);
+    } catch (e) {
+      console.error(`Error adding Likes: `, e);
+    }
+  };
+
+  const deleteBlog = async (id) => {
+    try {
+      await blogService.remove(id);
+      setRefreshBlogs(!refreshBlogs);
+    } catch (e) {
+      console.error('Error deleting blog: ', e);
     }
   };
 
@@ -137,29 +160,38 @@ const App = () => {
       <button type='submit' onClick={handleLogout}>
         logout
       </button>
-      <Toggelable buttonLabel='New Blog' buttonLabel2='Cancel'>
-      <BlogForm
-        title={title}
-        author={author}
-        url={url}
-        likes={likes}
-        handleSubmit={addBlog}
-        handleTitleChange={({ target }) =>
-          setTitle(target.value)
-        }
-        handleAuthorChange={({ target }) =>
-          setAuthor(target.value)
-        }
-        handleUrlChange={({ target }) =>
-          setUrl(target.value)
-        }
-        handleLikesChange={({ target }) =>
-          setLikes(target.value)
-        }
-      />
+      <Toggelable
+        buttonLabel='New Blog'
+        buttonLabel2='Cancel'
+        ref={blogFormRef}
+      >
+        <BlogForm
+          title={title}
+          author={author}
+          url={url}
+          likes={likes}
+          handleSubmit={addBlog}
+          handleTitleChange={({ target }) =>
+            setTitle(target.value)
+          }
+          handleAuthorChange={({ target }) =>
+            setAuthor(target.value)
+          }
+          handleUrlChange={({ target }) =>
+            setUrl(target.value)
+          }
+          handleLikesChange={({ target }) =>
+            setLikes(target.value)
+          }
+        />
       </Toggelable>
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
+        <Blog
+          key={blog.id}
+          blog={blog}
+          addLikes={addLikes}
+          deleteBlogs={deleteBlog}
+        />
       ))}
     </div>
   );

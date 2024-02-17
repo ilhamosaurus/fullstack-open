@@ -13,7 +13,7 @@ const Blog = ({ blog, addLikes, deleteBlogs }) => {
 
   return (
     <div style={blogStyle}>
-      <div>
+      <div className="blog">
         {blog.title} {blog.author}
       </div>
       <Toggelable buttonLabel="View" buttonLabel2="Hide">

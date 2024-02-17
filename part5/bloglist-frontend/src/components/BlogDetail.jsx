@@ -21,7 +21,9 @@ const BlogDetail = ({ blog, addLikes, deleteBlog }) => {
       <p>{blog.url}</p>
       <p>
         {blog.likes}
-        <button onClick={handleLikes}>like</button>
+        <button onClick={handleLikes} className="likeButton">
+          like
+        </button>
       </p>
       <p>{blog.user ? blog.user.name : 'No user information available'}</p>
       <button onClick={handleDelete}>Remove</button>

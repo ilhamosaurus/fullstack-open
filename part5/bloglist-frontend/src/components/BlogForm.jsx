@@ -15,7 +15,7 @@ const BlogForm = ({
   const alias = ['Title', 'Author', 'Url', 'Likes']
 
   return (
-    <div>
+    <div className="formDiv">
       <h2>Create a New Blog</h2>
       <form onSubmit={handleSubmit}>
         <Input value={title} name={alias[0]} setChange={handleTitleChange} />

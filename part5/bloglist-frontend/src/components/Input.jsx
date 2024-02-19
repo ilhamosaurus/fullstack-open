@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 const Input = ({ value, name, setChange }) => (
   <div>
     {name}:
-    <input type="text" value={value} name={name} onChange={setChange} />
+    <input type="text" value={value} name={name} placeholder={name} onChange={setChange} />
   </div>
 )
 

@@ -36,6 +36,7 @@ loginRouter.post('/', async (req, res) => {
       token,
       username: user.username,
       name: user.name,
+      id: user.id,
     });
   } catch (e) {
     error('Error when logining: ', e);

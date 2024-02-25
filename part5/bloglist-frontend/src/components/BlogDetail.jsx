@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-const BlogDetail = ({ blog, addLikes, deleteBlog }) => {
+const BlogDetail = ({ blog, addLikes, deleteBlog, userId }) => {
   const handleLikes = () => {
     const updatedLikes = {
       title: blog.title,
@@ -16,8 +16,11 @@ const BlogDetail = ({ blog, addLikes, deleteBlog }) => {
       deleteBlog(blog.id)
     }
   }
+
+  const showDelete = blog.user.id === userId
+
   return (
-    <div>
+    <div className="whenShown">
       <p>{blog.url}</p>
       <p>
         {blog.likes}
@@ -26,7 +29,11 @@ const BlogDetail = ({ blog, addLikes, deleteBlog }) => {
         </button>
       </p>
       <p>{blog.user ? blog.user.name : 'No user information available'}</p>
-      <button onClick={handleDelete}>Remove</button>
+      {showDelete && (
+        <button onClick={handleDelete} id="remove-button">
+          Remove
+        </button>
+      )}
     </div>
   )
 }
@@ -35,6 +42,7 @@ BlogDetail.propTypes = {
   blog: PropTypes.object.isRequired,
   addLikes: PropTypes.func.isRequired,
   deleteBlog: PropTypes.func.isRequired,
+  userId: PropTypes.string.isRequired,
 }
 
 export default BlogDetail

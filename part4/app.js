@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const { info, error } = require('./utils/logger');
 const blogRouter = require('./controllers/blogRoute');
 require('express-async-errors');
+require('dotenv').config();
 const {
   requestLogger,
   unknownEndpoint,
@@ -39,6 +40,11 @@ app.use(tokenExtractor);
 app.use('/api/blogs', userExtractor, blogRouter);
 app.use('/api/users', userRouter);
 app.use('/api/login', loginRouter);
+
+if (process.env.NODE_ENV === 'test') {
+  const testingRouter = require('./controllers/testing');
+  app.use('/api/testing', testingRouter);
+}
 app.use(unknownEndpoint);
 app.use(errorHandler);
 

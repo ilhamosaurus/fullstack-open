@@ -6,7 +6,8 @@
   "scripts": {
     "start": "NODE_ENV=production node index.js",
     "test": "NODE_ENV=test jest --verbose",
-    "dev": "NODE_ENV=development node --watch index.js"
+    "dev": "NODE_ENV=development node --watch index.js",
+    "start:dev": "NODE_ENV=test node index.js"
   },
   "author": "ilhamosaurus",
   "license": "MIT",

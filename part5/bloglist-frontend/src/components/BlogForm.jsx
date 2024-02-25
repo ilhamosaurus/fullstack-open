@@ -22,7 +22,9 @@ const BlogForm = ({
         <Input value={author} name={alias[1]} setChange={handleAuthorChange} />
         <Input value={url} name={alias[2]} setChange={handleUrlChange} />
         <Input value={likes} name={alias[3]} setChange={handleLikesChange} />
-        <button type="submit">Create</button>
+        <button type="submit" id="create-button">
+          Create
+        </button>
       </form>
     </div>
   )

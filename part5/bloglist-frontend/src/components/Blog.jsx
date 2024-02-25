@@ -2,7 +2,7 @@ import BlogDetail from './BlogDetail'
 import Toggelable from './Toggelable'
 import PropTypes from 'prop-types'
 
-const Blog = ({ blog, addLikes, deleteBlogs }) => {
+const Blog = ({ blog, addLikes, deleteBlogs, userId }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -12,12 +12,17 @@ const Blog = ({ blog, addLikes, deleteBlogs }) => {
   }
 
   return (
-    <div style={blogStyle}>
-      <div className="blog">
+    <div style={blogStyle} className="blog">
+      <div className="whenHidden">
         {blog.title} {blog.author}
       </div>
       <Toggelable buttonLabel="View" buttonLabel2="Hide">
-        <BlogDetail blog={blog} addLikes={addLikes} deleteBlog={deleteBlogs} />
+        <BlogDetail
+          blog={blog}
+          addLikes={addLikes}
+          deleteBlog={deleteBlogs}
+          userId={userId}
+        />
       </Toggelable>
     </div>
   )
